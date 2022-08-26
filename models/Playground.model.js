@@ -5,11 +5,11 @@ const plaugroundSchema = mongoose.Schema({
   address: String,
   coordinates: { type: String, require: true },
   schedule: { type: String, require: true, default: '24' },
-  rating: { type: Number, default: 0 },
   surface: { type: String, require: true },
   covered: { type: Boolean, require: true },
   reviews: [
     {
+      stars: Number,
       text: { type: String, require: true },
       user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +31,10 @@ const plaugroundSchema = mongoose.Schema({
       time: { type: String, default: '1h' }
     }
   ],
-  sport: { type: String, require: true },
+  sport: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Sport'
+  },
   photos: [
     {
       type: mongoose.Schema.Types.ObjectId,

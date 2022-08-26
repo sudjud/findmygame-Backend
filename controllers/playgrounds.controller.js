@@ -10,5 +10,13 @@ module.exports.playgroundController = {
     } catch (e) {
       res.json(e);
     }
+  },
+  
+  getPlaygrounds: async (req, res) => {
+    try {
+      res.json(await Playground.find({}).populate('photos sport reviews'))
+    } catch (e) {
+      res.json(e);
+    }
   }
 }
