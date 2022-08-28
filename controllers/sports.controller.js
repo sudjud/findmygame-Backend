@@ -10,5 +10,13 @@ module.exports.sportController = {
     } catch (e) {
       res.json(e);
     }
+  },
+  getSports: async (req, res) => {
+    try {
+      const sports = await Sport.find({})
+      res.json(sports);
+    } catch (e) {
+      res.json(e);
+    }
   }
 }

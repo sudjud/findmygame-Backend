@@ -3,7 +3,8 @@ const Image = require('../models/Images.model');
 
 module.exports.imageController = {
   upload: async (req, res) => {
-    const images = req.files.image
+    let images = req.files.plgImage
+    images = images.length ? images : [images]
     let newImages = [];
     try {
       for (let image of images) {
@@ -19,7 +20,7 @@ module.exports.imageController = {
           res.json(e)
         }
       }
-      res.json(newImages);
+      res.json(newImages);  
     } catch (e) {
       res.json(e);
     }
