@@ -24,7 +24,7 @@ const UserSchema = mongoose.Schema({
     default: false,
   },
   //
-  acticationLink: {
+  activationLink: {
     type: String,
   },
 });
