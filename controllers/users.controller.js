@@ -84,10 +84,10 @@ module.exports.userController = {
       // 1-й параметр это ключ по которому cookie будет сохраняться
       // 2-й параметр это сама cookie
       // 3-й параметр это опции
-      res.cookie("refreshToken", userData.refreshToken, {
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-      });
+      // res.cookie("refreshToken", userData.refreshToken, {
+      //   maxAge: 30 * 24 * 60 * 60 * 1000,
+      //   httpOnly: true,
+      // });
 
       console.log("контроллер Регистрация");
 
