@@ -47,19 +47,19 @@ module.exports.userController = {
 
       //Если нет, то мы хэшируем пароль
       const hash = await bcrypt.hash(password, 3);
-      const user = User.create({ email, password: hash, name });
-
+      
       //Ссылка по которой юзер будет активировать аккаунт и подтверждать
       //что эта почта принадлежит ему, эту ссылку для активации для начала
       //нужно сгенерировать и делать это будем с помощью библиотеки
       //UUID  вызвав у него функцию V4 которая возвращает рандомную ссылку
-      const acticationLink = uuid.v4();
-
+      const activationLink = uuid.v4();
+      
+      const user = await User.create({ email, password: hash, name, activationLink });
       //После создания юзера нам нужно отправить на его почту сообщение о подтверждении
       //Для этого мы создали функцию в Mail-Service
       await mailService.sendActivationMail(
         email,
-        `${process.env.API_URL}/activate/${acticationLink}`
+        `${process.env.API_URL}/activate/${activationLink}`
       );
       //Параметром в функцию generateToken() нужно передать PAYLOAD
       //создадим class userDto который хранит в себе некоторую инфу о пользователе
@@ -70,7 +70,7 @@ module.exports.userController = {
       const userDto = new UserDto(user); // id, email, isActivated
 
       //Используем спред оператор (...) и передаем новый объект
-      const tokens = tokenService.generateToken({ ...userDto });
+      const tokens = await tokenService.generateToken({ ...userDto });
 
       //сохраняем наш refreshToken в базу данных
       await tokenService.saveToken(userDto.id, tokens.refreshToken);

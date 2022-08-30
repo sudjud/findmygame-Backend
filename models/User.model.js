@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema({
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
     required: true,
@@ -20,7 +24,7 @@ const UserSchema = mongoose.Schema({
     default: false,
   },
   //
-  acticationLink: {
+  activationLink: {
     type: String,
   },
 });

@@ -26,15 +26,15 @@ module.exports.userServise = {
     //что эта почта принадлежит ему, эту ссылку для активации для начала
     //нужно сгенерировать и делать это будем с помощью библиотеки
     //UUID  вызвав у него функцию V4 которая возвращает рандомную ссылку
-    const acticationLink = uuid.v4();
+    const activationLink = uuid.v4();
 
     //Сохраняем пользователя в базу данных
     const user = await User.create({ email, password: hash, name });
-    //После создания юзера нам нужно отправить на его почту сообщение о подтверждении
+    //После создания юзера нам нужно отправить на его почту сообщение о подтвержденииa
     //Для этого мы создали функцию в Mail-Service
     await mailService.sendActivationMail(
       email,
-      `${process.env.API_URL}/activate/${acticationLink}`
+      `${process.env.API_URL}/activate/${activationLink}`
     );
     //Параметром в функцию generateToken() нужно передать PAYLOAD
     //создадим class userDto который хранит в себе некоторую инфу о пользователе
@@ -65,6 +65,7 @@ module.exports.userServise = {
   */
   userActivate: async (activationLink) => {
     const user = await User.findOne({ activationLink });
+    console.log(user);
     if (!user) {
       // ОПЕРАТОР throw ГЕНЕРИРУЕТ ОШИБКУ
       throw ApiError.BadRequest("Некорректная ссылка активации");
