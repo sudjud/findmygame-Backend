@@ -24,7 +24,7 @@ class mailService {
     /*
   Вызываем функцию sendMail которая параметром принимает объект
   у которого должны быть поля:
-  */
+  */  
     await this.transporter.sendMail({
       // поле from - почта от которой исходит письмо
       from: process.env.SMPT_USER,
@@ -34,12 +34,12 @@ class mailService {
       // API_URL - URL нашего сайта
       subject: "Активация письма на" + process.env.API_URL,
       text: "",
-      html: `
+      html: ` 
       <div>
         <h1>
          Для активации аккаунtа перейдите по ссылке
         </h1>
-        <a href="${link}}">${link}</a>
+        <a href="${link}">${link}</a>
       </div>
       `,
     });
