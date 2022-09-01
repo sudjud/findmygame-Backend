@@ -5,7 +5,7 @@ const router = Router();
 //Эта функция нужна для валидации тела запроса
 const { body } = require("express-validator");
 //Импортируем middleware для проверки авторизации
-const authMiddleware = require("../middlewares/auth-middleware");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.post(
   "/register",

@@ -12,13 +12,13 @@ module.exports = function (req, res, next) {
     const accesToken = authorizationHeader.split(" ")[1];
     // Делаем проверку - есть ли токен
     if (!accesToken) {
-      return next(ApiError.UnauthorizedError());
+      return res.status(401).json({ error: 'Вы не авторизованы' })
     }
     // Валидируем наш токен с помощью функции из tokenServis
     const userData = tokenService.validateAccessToken(accesToken);
 
     if (!userData) {
-      return next(ApiError.UnauthorizedError());
+      return res.status(401).json({ error: 'Вы не авторизованы' })
     }
 
     // Если все прошло без ошибок то мы в req.user помешаем
