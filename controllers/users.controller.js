@@ -31,7 +31,6 @@ module.exports.userController = {
       и нам необходима передать ее в ErrorHandler в наш middleware
       */
       if (!errors.isEmpty()) {
-        console.log(2, errors);
         return res.status(401).json({ error: "Некорректные данные!" });
       }
 
@@ -47,14 +46,19 @@ module.exports.userController = {
 
       //Если нет, то мы хэшируем пароль
       const hash = await bcrypt.hash(password, 3);
-      
+
       //Ссылка по которой юзер будет активировать аккаунт и подтверждать
       //что эта почта принадлежит ему, эту ссылку для активации для начала
       //нужно сгенерировать и делать это будем с помощью библиотеки
       //UUID  вызвав у него функцию V4 которая возвращает рандомную ссылку
       const activationLink = uuid.v4();
-      
-      const user = await User.create({ email, password: hash, name, activationLink });
+
+      const user = await User.create({
+        email,
+        password: hash,
+        name,
+        activationLink,
+      });
       //После создания юзера нам нужно отправить на его почту сообщение о подтверждении
       //Для этого мы создали функцию в Mail-Service
       await mailService.sendActivationMail(
@@ -88,8 +92,6 @@ module.exports.userController = {
       //   maxAge: 30 * 24 * 60 * 60 * 1000,
       //   httpOnly: true,
       // });
-
-      console.log("контроллер Регистрация");
 
       return res.json(user);
     } catch (error) {
@@ -162,7 +164,6 @@ module.exports.userController = {
     try {
       // забираем ссылку активации из params
       const activationLink = req.params.link;
-
       // вызываем функцию activate из userService
       // и параметром передаем ссылку для активации
       await userServise.userActivate(activationLink);
@@ -200,8 +201,8 @@ module.exports.userController = {
   // Функция для получения всех пользователей
   getUsers: async (req, res, next) => {
     try {
-      const users = await userServise.getAllUsers();
-      return res.json(users);
+      const user = await User.findById(req.user.id);
+      return res.json(user);
     } catch (error) {
       next(error);
     }

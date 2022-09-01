@@ -156,8 +156,11 @@ module.exports.userServise = {
   },
 
   // Функция для вывода всех пользователей
-  getAllUsers: async () => {
-    const users = await User.find();
-    return users;
-  },
+  // getAllUsers: async () => {
+  //   const userData = tokenService.validateRefreshToken(refreshToken);
+  //   const userDto = new UserDto(user);
+  //   console.log(userDto);
+  //   const users = await User.find();
+  //   return users;
+  // },
 };
