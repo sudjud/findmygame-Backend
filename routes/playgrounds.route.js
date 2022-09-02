@@ -9,4 +9,6 @@ router.get('/playground', playgroundController.getPlaygrounds);
 
 router.patch('/rent/playground/:id', authMiddleware, playgroundController.rentPlayground)
 
+router.patch('/review/playground/:id', authMiddleware, playgroundController.addReview)
+
 module.exports = router;
