@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema({
     required: true,
   },
   password: {
-    type: String, 
+    type: String,  
     required: true,
   },
   //Подтвердил пользователь почту или нет!

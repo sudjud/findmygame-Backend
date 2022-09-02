@@ -12,6 +12,7 @@ module.exports.messagesController = {
             const result = await message.save()
             res.status(200).json(result)
         } catch (e) {
+        
             res.status(500).json(e)
         }
     },
@@ -24,4 +25,5 @@ module.exports.messagesController = {
             res.status(500).json(e)
         }
     }
+    
 }
