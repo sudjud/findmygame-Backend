@@ -11,4 +11,6 @@ router.patch('/rent/playground/:id', authMiddleware, playgroundController.rentPl
 
 router.patch('/review/playground/:id', authMiddleware, playgroundController.addReview)
 
+router.patch('/cancel-rent/playground/:id', authMiddleware, playgroundController.deleteRent)
+
 module.exports = router;
