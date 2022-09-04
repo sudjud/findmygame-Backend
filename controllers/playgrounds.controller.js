@@ -90,4 +90,23 @@ module.exports.playgroundController = {
       res.json(e);
     }
   },
+
+  deleteRent: async (req, res) => {
+    try {
+      const playground = await Playground.findByIdAndUpdate(
+        req.params.id,
+        {
+          $pull: {
+            booking: {
+              user: req.user.id,
+            },
+          },
+        },
+        { new: true }
+      );
+      res.json(playground);
+    } catch (e) {
+      res.json(e);
+    }
+  },
 };

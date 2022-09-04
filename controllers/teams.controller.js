@@ -4,7 +4,6 @@ const {
   botApi
 } = require('../service/telegram-service');
 
-
 module.exports.teamController = {
   createTeam: async (req, res) => {
     try {
@@ -13,11 +12,9 @@ module.exports.teamController = {
         admin: user.id,
         maxMembers: req.body.maxMembers,
         sport: req.body.sport,
-        members: [
-          user.id
-        ]
+        members: [user.id],
       });
-      res.json(await Team.find({}).populate('admin sport').populate('members'));
+      res.json(await Team.find({}).populate("admin sport").populate("members"));
     } catch (e) {
       res.json(e);
     }
@@ -25,8 +22,10 @@ module.exports.teamController = {
 
   getTeams: async (req, res) => {
     try {
-      const teams = await Team.find({}).populate('admin sport').populate('members')
-      res.json(teams)
+      const teams = await Team.find({})
+        .populate("admin sport")
+        .populate("members");
+      res.json(teams);
     } catch (e) {
       res.json(e);
     }
@@ -34,8 +33,8 @@ module.exports.teamController = {
 
   joinToTeam: async (req, res) => {
     try {
-      const user = req.user
-      const team = await Team.findById(req.params.id)
+      const user = req.user;
+      const team = await Team.findById(req.params.id);
       const isAdmin = team.admin === user.id;
       const isMember = team.members.includes(user.id);
 
@@ -82,10 +81,26 @@ module.exports.teamController = {
       }, {
         new: true
       }).populate('admin sport').populate('members');
-      
       res.json(newTeam);
     } catch (e) {
-      res.json(e)
+      res.json(e);
     }
-  }
-}
+  },
+
+  logoutTeam: async (req, res) => {
+    try {
+      const team = await Team.findByIdAndUpdate(
+        req.params.id,
+        {
+          $pull: {
+            members: req.user.id,
+          },
+        },
+        { new: true }
+      );
+      res.json(team);
+    } catch (error) {
+      res.json(error);
+    }
+  },
+};
