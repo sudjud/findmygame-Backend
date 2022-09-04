@@ -1,4 +1,4 @@
-const Team = require('../models/Team.model')
+const Team = require("../models/Team.model");
 
 module.exports.teamController = {
   createTeam: async (req, res) => {
@@ -8,11 +8,9 @@ module.exports.teamController = {
         admin: user.id,
         maxMembers: req.body.maxMembers,
         sport: req.body.sport,
-        members: [
-          user.id
-        ]
+        members: [user.id],
       });
-      res.json(await Team.find({}).populate('admin sport').populate('members'));
+      res.json(await Team.find({}).populate("admin sport").populate("members"));
     } catch (e) {
       res.json(e);
     }
@@ -20,8 +18,10 @@ module.exports.teamController = {
 
   getTeams: async (req, res) => {
     try {
-      const teams = await Team.find({}).populate('admin sport').populate('members')
-      res.json(teams)
+      const teams = await Team.find({})
+        .populate("admin sport")
+        .populate("members");
+      res.json(teams);
     } catch (e) {
       res.json(e);
     }
@@ -29,27 +29,50 @@ module.exports.teamController = {
 
   joinToTeam: async (req, res) => {
     try {
-      const user = req.user
-      const team = await Team.findById(req.params.id)
+      const user = req.user;
+      const team = await Team.findById(req.params.id);
       const isAdmin = team.admin === user.id;
       const isMember = team.members.includes(user.id);
       if (isAdmin || isMember) {
-        return res.json({message: 'Вы уже в команде'})
+        return res.json({ message: "Вы уже в команде" });
       }
       if (team.members.length === team.maxMembers) {
         team.ready = true;
         team.save();
-        return res.json({message: 'Команда уже собрана'})
+        return res.json({ message: "Команда уже собрана" });
       }
-      const newTeam = await Team.findByIdAndUpdate(req.params.id, {
-        $push: {
-          members: user.id
-        }
-      }, {new: true}).populate('admin sport').populate('members');
-      
+      const newTeam = await Team.findByIdAndUpdate(
+        req.params.id,
+        {
+          $push: {
+            members: user.id,
+          },
+        },
+        { new: true }
+      )
+        .populate("admin sport")
+        .populate("members");
+
       res.json(newTeam);
     } catch (e) {
-      res.json(e)
+      res.json(e);
     }
-  }
-}
+  },
+
+  logoutTeam: async (req, res) => {
+    try {
+      const team = await Team.findByIdAndUpdate(
+        req.params.id,
+        {
+          $pull: {
+            members: req.user.id,
+          },
+        },
+        { new: true }
+      );
+      res.json(team);
+    } catch (error) {
+      res.json(error);
+    }
+  },
+};
