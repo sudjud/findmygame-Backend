@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
-const fileUpload = require('express-fileupload')
+const fileUpload = require('express-fileupload');
 const app = express();
-require('dotenv').config();
+const telegramApi = require('node-telegram-bot-api');
+const { botApi } = require('./service/telegram-service.js');
+require('dotenv').config(); 
  
 app.use(express.json());
 app.use(require('morgan')('dev'));
@@ -12,6 +14,10 @@ app.use(fileUpload())
 app.use(cors());
 app.use(require("./routes/index.js"));
 app.use(express.static('uploads/images'));
+
+
+botApi.saveCommands();
+botApi.saveId();
 
 
 mongoose.

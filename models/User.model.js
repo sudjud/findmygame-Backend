@@ -27,6 +27,7 @@ const UserSchema = mongoose.Schema({
   activationLink: {
     type: String,
   },
+  telegramId: String
 });
 
 const User = mongoose.model("User", UserSchema);
